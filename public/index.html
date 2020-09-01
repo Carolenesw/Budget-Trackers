@@ -9,8 +9,8 @@
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="styles.css">
- <link rel="manifest" href="manifest.webmanifest">
 
+  <link rel="manifest" href="/manifest.webmanifest">
   <title>Budget Tracker</title>
 </head>
 <body>
@@ -44,20 +44,16 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script src="index.js"></script>
-
-  <!-- create serverworker connection  -->
-  <script> 
-    if ('serviceWorker' in navigator) {
-     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/serviceworker.js').then(function(registration) {
-       // Registration was successful
-       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, function(err) {
-       // registration failed :(
-       console.log('ServiceWorker registration failed: ', err);
-      });
-     });
-    }
-    </script>
+  <script src="/db.js"></script>
+  <!-- create serverworker off line connection  -->
+  <script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("serviceworker.js").then(reg => {
+            console.log("Service worker file located!", reg);
+          });
+        });
+      }
+  </script>
 </body>
 </html>
