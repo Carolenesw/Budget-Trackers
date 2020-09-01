@@ -2,17 +2,19 @@ const FILES_TO_CACHE = [
   "/",
   "/index.html",
   "/styles.css",
-  "/icons/icon-192x192.png",
-  "/icons/icon-512x512.png",
+  "/manifest.webmanifest",
+  "/index.js"
+//   "/icons/icon-192x192.png",
+//   "/icons/icon-512x512.png"
 ];
 
-const CACHE_MONEY = "static-cache-original";
-const DATA_MONEY_NEW = "data-cache-new";
+const CACHE_FILE = "static-cache-original";
+const FILE_CACHE_DATA = "data-cache-new";
 // set up install
 self.addEventListener("install", function (evt) {
   evt.waitUntil(
     caches
-      .open(CACHE_MONEY)
+      .open(CACHE_FILE)
       .then((cache) => {
         console.log("Your files were pre-cached successfully!");
         return cache.addAll(FILES_TO_CACHE);
@@ -29,7 +31,7 @@ self.addEventListener("activate", function (evt) {
     caches.keys().then((keyList) => {
       return Promise.all(
         keyList.map((key) => {
-          if (key !== CACHE_MONEY && key !== DATA_MONEY_NEW) {
+          if (key !== CACHE_FILE && key !== FILE_CACHE_DATA) {
             console.log("Removing old cache data", key);
             return caches.delete(key);
           }
@@ -55,7 +57,7 @@ self.addEventListener("fetch", (event) => {
   if (event.request.url.includes("/api/")) {
     // make network request and fallback to cache if network request fails (offline)
     event.respondWith(
-      caches.open(DATA_MONEY_NEW).then((cache) => {
+      caches.open(FILE_CACHE_DATA).then((cache) => {
         return fetch(event.request)
           .then((response) => {
             cache.put(event.request, response.clone());
@@ -73,7 +75,7 @@ self.addEventListener("fetch", (event) => {
         return cachedResponse;
       }
       // request is not in cache. make network request and cache the response
-      return caches.open(DATA_MONEY_NEW).then((cache) => {
+      return caches.open(FILE_CACHE_DATA).then((cache) => {
         return fetch(event.request).then((response) => {
           return cache.put(event.request, response.clone()).then(() => {
             return response;
@@ -83,3 +85,5 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
+
