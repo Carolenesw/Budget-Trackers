@@ -1,11 +1,9 @@
-// require files 
 const FILES_TO_CACHE = [
   "/",
   "/index.html",
   "/styles.css",
   "/icons/icon-192x192.png",
   "/icons/icon-512x512.png",
-  "/images/ledger.jpg",
 ];
 
 const CACHE_MONEY = "static-cache-original";
@@ -41,6 +39,7 @@ self.addEventListener("activate", function (evt) {
   );
   self.clients.claim();
 });
+
 
 // fetch data 
 self.addEventListener("fetch", (event) => {
